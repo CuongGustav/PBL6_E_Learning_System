@@ -1,0 +1,103 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Bố cục toàn trang */
+body {
+    background-color: #f1f1f1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+
+/* Khung chứa nội dung */
+.container {
+    background-color: #ffffff;
+    width: 400px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    text-align: center;
+    position: relative;
+}
+
+/* Phần tiêu đề */
+.title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Label cho nghĩa của từ */
+.input-label {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 5px;
+    display: block;
+}
+
+/* Input cho từ điền vào */
+.input-word {
+    font-size: 24px;
+    padding: 10px;
+    width: 80%;
+    margin: 10px 0 20px 0;
+    text-align: center;
+    border: 2px solid #4CAF50;
+    border-radius: 5px;
+}
+
+/* Thông tin từ vựng */
+.info {
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 20px;
+    display: none; /* Ẩn phần thông tin từ đầu */
+}
+
+.info h3 {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.info p {
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+/* Nút tiếp tục */
+.continue-btn {
+    margin-top: 20px;
+    background-color: #ffffff;
+    color: #4CAF50;
+    border: 2px solid #4CAF50;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.continue-btn:hover {
+    background-color: #4CAF50;
+    color: white;
+}
+
+/* Icon ở góc trên */
+.icon {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 30px;
+    height: 30px;
+    background-color: orange;
+    border-radius: 50%;
+}

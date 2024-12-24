@@ -1,0 +1,41 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap; /* Cho phép xuống dòng */
+    gap: 20px;
+    /* justify-content: center; */
+    max-width: 1200px; /* Giới hạn chiều rộng để chứa 3 thẻ */
+}
+
+.box {
+    width: 300px;
+    padding: 20px;
+    background-color: #f4f4f4;
+    border-radius: 20px; /* Bo tròn góc 20px */
+    text-align: center;
+    color: #000000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Hiệu ứng bóng đổ nhẹ */
+}
+
+.box a {
+    display: block;
+    color: #000000;
+    text-decoration: none ;
+    margin: 5px 0;
+    font-weight: bold;
+    /* text-decoration: none; */
+}
+
+.box:hover {
+    text-decoration: underline;
+    background-color: rgb(213, 213, 210);
+}

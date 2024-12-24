@@ -1,0 +1,188 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  /* font-family: 'Arial', sans-serif; */
+  overflow: hidden;
+}
+
+header {
+  position: relative;
+  width: 100%;
+  height: 70px;
+  background: #ffffff; /* Nền trắng */
+  color: #333; /* Màu chữ đậm hơn để nổi bật */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid #000; /* Viền đen phía dưới */
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 4%;
+  width: 20%;
+}
+
+.brand .fa-github {
+  font-size: 35px;
+}
+
+.brand h1 {
+  margin-left: 5%;
+}
+
+.navbar {
+  position: relative;
+  width: 70%;
+  padding: 5%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.searchBox {
+  position: relative;
+  width: 40%;
+  display: flex;
+  align-items: center;
+}
+
+.searchBox input {
+  width: 100%;
+  height: 35px;
+  border: 2px solid #000; /* Viền đen */
+  border-radius: 8px;
+  padding: 1%;
+  text-indent: 10px;
+  font-size: 18px;
+}
+
+#searchIcon {
+  position: relative;
+  left: -30px;
+  font-size: 22px;
+  color: rgb(77, 77, 77);
+  cursor: pointer;
+  z-index: 221;
+}
+
+ul {
+  width: 80%;
+  text-align: center;
+}
+
+ul li {
+  display: inline-block;
+  margin-left: 4%;
+  transition: all 0.5s ease;
+  text-align: center;
+  cursor: pointer;
+  padding: 1%;
+  height: 20px;
+  overflow: hidden;
+  background-color: #ffffff; /* Nền trắng */
+  /* Xóa border */
+}
+
+ul li:hover {
+  height: 45px;
+  background-color: #f0f0f0; /* Màu nền khi hover */
+}
+
+ul li #headIcon {
+  display: block;
+  font-size: 22px;
+}
+
+ul li a {
+  text-decoration: none;
+  font-size: 18px;
+  color: #333; /* Màu chữ đậm */
+}
+
+ul li a:active,
+ul li a:focus {
+  text-decoration: underline;
+  font-weight: 700;
+}
+
+#menuIcon {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    position: relative;
+    display: block;
+    width: 60%;
+    display: none;
+  }
+
+  .navbar.navactive {
+    display: inline;
+  }
+
+  .searchBox {
+    position: relative;
+    width: 100%;
+    top: 60px;
+    z-index: 221;
+    left: 10%;
+  }
+
+  #menuIcon {
+    display: inline;
+    position: fixed;
+    font-size: 25px;
+    margin-left: 88%;
+    z-index: 222;
+    float: right;
+    padding: 1%;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 2px solid #000; /* Viền đen */
+    background-color: #ffffff; /* Nền trắng */
+  }
+
+  .navbar ul {
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    background-color: #ffffff; /* Nền trắng */
+    border: 2px solid #000; /* Viền đen */
+  }
+
+  .navbar ul li {
+    display: block;
+    margin-top: 20px;
+    width: 100%;
+    height: 40px;
+    text-align: left;
+    position: relative;
+    top: 50px;
+    padding: 2%;
+    /* Xóa border-bottom */
+  }
+
+  ul li #headIcon {
+    display: inline-block;
+    font-size: 33px;
+  }
+
+  ul li:hover {
+    background: #f0f0f0; /* Màu nền khi hover */
+  }
+
+  ul li a {
+    margin-left: 40px;
+    font-weight: 600;
+    color: #333; /* Màu chữ đậm */
+  }
+}
