@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Stream</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+    
+        .container {
+            display: flex;
+            flex-direction: column; /* Xếp theo chiều dọc */
+            gap: 20px; /* Khoảng cách giữa các phần tử */
+        }
+    
+        .top-row {
+            display: flex;
+            justify-content: space-between; /* Căn chỉnh đều các phần tử trong hàng */
+            gap: 20px; /* Khoảng cách giữa các phần tử */
+        }
+    
+        .video-container, .captured-container {
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            padding: 10px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            flex: 1; /* Phân chia đều không gian */
+        }
+    
+        .video-container img, .captured-container img {
+            width: 100%; /* Đảm bảo ảnh chiếm toàn bộ chiều rộng khung */
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: block;
+            max-height: 400px; /* Giảm chiều cao ảnh */
+            object-fit: cover; /* Giữ tỉ lệ ảnh */
+        }
+    
+        #captureBtn {
+            display: block;
+            margin-top: 10px;
+            padding: 8px 16px;
+            font-size: 14px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            text-align: center;
+        }
+    
+        #captureBtn:hover {
+            background-color: #218838;
+        }
+    
+        #captureBtn:focus {
+            outline: none;
+        }
+    
+        .textarea-container {
+            display: flex;
+            justify-content: space-between; /* Đặt hai textarea ở hai bên */
+            gap: 20px; /* Khoảng cách giữa các textarea */
+        }
+    
+        textarea {
+            width: 690px;
+            flex: 1; /* Chiếm đều không gian có sẵn */
+            height: 200px; /* Chiều cao cố định */
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            padding: 8px;
+            font-size: 25px;
+            resize: vertical; /* Cho phép thay đổi kích thước theo chiều dọc */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            background-color: #fff; /* Màu nền của textarea */
+            outline: none; /* Bỏ viền khi focus */
+            transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Hiệu ứng khi hover */
+        }
+    
+        textarea:focus {
+            border-color: #28a745; /* Đổi màu viền khi focus */
+            box-shadow: 0 2px 4px rgba(40, 167, 69, 0.2); /* Hiệu ứng bóng khi focus */
+        }
+        label {
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="top-row">
+            <div class="video-container">
+                <img id="videoStream" src="{{ url_for('video_feed') }}" alt="Camera Stream">
+                <button id="captureBtn">Chụp Hình</button>
+            </div>
+            <div class="captured-container">
+                <h2>Hình Ảnh Đã Chụp</h2>
+                <img id="capturedImage" alt="Captured Image">
+            </div>
+        </div>
+        <div class="textarea-container">
+            <div>
+                <label for="textarea1">English</label></br>
+                <textarea id="textarea1" placeholder="Nhập nội dung vào đây..." readonly></textarea>
+            </div>
+            <div>
+                <label for="textarea2">VietNamese</label></br>
+                <textarea id="textarea2" placeholder="Nhập nội dung vào đây..." readonly></textarea>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('captureBtn').addEventListener('click', () => {
+            const videoElement = document.getElementById('videoStream');
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+    
+            // Đặt kích thước canvas theo kích thước video
+            canvas.width = videoElement.width || 640;
+            canvas.height = videoElement.height || 480;
+    
+            // Vẽ khung hình hiện tại từ video lên canvas
+            context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+    
+            // Lấy hình ảnh dưới dạng blob
+            canvas.toBlob((blob) => {
+                // Hiển thị hình ảnh đã chụp
+                const capturedImageElement = document.getElementById('capturedImage');
+                capturedImageElement.src = URL.createObjectURL(blob);
+    
+                // Gửi yêu cầu đầu tiên đến /check_image
+                fetch('https://datasendandreceiverserver.onrender.com/check_text', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        status: "success"
+                    })
+                })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json(); // Đọc phản hồi JSON
+                    } else {
+                        throw new Error('Lỗi khi gửi yêu cầu check_image.');
+                    }
+                })
+                .then(data => {
+                    console.log('Phản hồi từ check_image:', data);
+    
+                    // Kiểm tra phản hồi từ server
+                    if (data.message === "Text deleted successfully and status reset") {
+                        // Tạo đối tượng FormData để gửi ảnh
+                        const formData = new FormData();
+                        formData.append('image', blob, 'captured_image.jpg'); // Dùng key là 'image'
+    
+                        // Gửi ảnh lên server sau khi nhận phản hồi thành công
+                        return fetch('https://datasendandreceiverserver.onrender.com/upload_image', {
+                            method: 'POST',
+                            body: formData
+                        });
+                    } else {
+                        throw new Error('Server không trả về thông điệp mong đợi.');
+                    }
+                })
+                .then(uploadResponse => {
+                    if (uploadResponse.ok) {
+                        alert('Hình ảnh đã được gửi thành công!');
+    
+                        // Bắt đầu polling để lấy dữ liệu văn bản
+                        pollForText();
+                    } else {
+                        throw new Error('Lỗi khi gửi hình ảnh.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Lỗi:', error);
+                    alert('Có lỗi xảy ra trong quá trình xử lý.');
+                });
+            }, 'image/jpeg'); // Định dạng ảnh
+        });
+    
+        function pollForText() {
+            const interval = 2000; // Khoảng thời gian giữa các lần polling (3 giây)
+            const maxAttempts = 20; // Số lần polling tối đa
+            let attempts = 0;
+    
+            const polling = setInterval(() => {
+                attempts++;
+    
+                console.log(`Đang polling lần thứ ${attempts}...`);
+                fetch('https://datasendandreceiverserver.onrender.com/get_text')
+                    .then(response => {
+                        if (response.ok) {
+                            return response.json(); // Nhận dữ liệu JSON từ server
+                        } else {
+                            throw new Error('Lỗi khi lấy dữ liệu văn bản.');
+                        }
+                    })
+                    .then(data => {
+                        // Kiểm tra nếu server đã sẵn sàng và trả dữ liệu
+                        if (data.english || data.vietnamese) {
+                            console.log('Dữ liệu nhận được:', data);
+    
+                            // Cập nhật vào textarea
+                            document.getElementById('textarea1').value = data.english || ''; // Nội dung tiếng Anh
+                            document.getElementById('textarea2').value = data.vietnamese || ''; // Nội dung tiếng Việt
+    
+                            alert('Dữ liệu văn bản đã được nhận thành công!');
+                            clearInterval(polling); // Dừng polling
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Lỗi:', error);
+                    });
+    
+                // Dừng polling nếu vượt quá số lần cho phép
+                if (attempts >= maxAttempts) {
+                    clearInterval(polling);
+                    alert('Quá thời gian chờ để nhận dữ liệu từ server.');
+                }
+            }, interval);
+        }
+    </script>
+    
+    
+</body>
+</html>

@@ -1,0 +1,72 @@
+/* Định dạng toàn bộ container */
+.container {
+    max-width: 600px;
+    margin: 20px auto;
+    background-color: #f9f9f9;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+}
+
+/* Định dạng tiêu đề */
+.container h2 {
+    text-align: center;
+    color: #333;
+    font-weight: 600;
+    margin-bottom: 25px;
+}
+
+/* Định dạng các form-group */
+.form-group {
+    margin-bottom: 20px;
+}
+
+/* Định dạng cho các input và textarea */
+.form-control {
+    width: 100%;
+    padding: 12px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    color: #495057;
+    transition: all 0.3s;
+}
+
+.form-control:focus {
+    border-color: #5e72e4;
+    box-shadow: 0 0 0 0.2rem rgba(94, 114, 228, 0.25);
+    outline: none;
+}
+
+/* Định dạng cho nút submit */
+.btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    background-color: #5e72e4;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: #324cdd;
+}
+
+/* Định dạng cho lỗi */
+.form-text.text-danger {
+    color: #e74c3c;
+}
+
+/* Định dạng ảnh xem trước */
+#preview-image {
+    display: block;
+    max-width: 100%;
+    margin-top: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
