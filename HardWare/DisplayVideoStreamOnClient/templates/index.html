@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Stream</title>
+</head>
+<body>
+    <h1>Video Stream</h1>
+    <img id="videoStream" src="{{ url_for('video_feed') }}" alt="Camera Stream">
+    <br><br>
+    <button id="captureBtn">Chụp Hình</button>
+
+    <h2>Hình Ảnh Đã Chụp</h2>
+    <img id="capturedImage" alt="Captured Image" style="border: 1px solid black; max-width: 100%;">
+
+    <h2>Chuỗi Base64 của Hình Ảnh</h2>
+    <textarea id="base64Text" rows="10" cols="80" readonly></textarea>
+
+    <script>
+        document.getElementById('captureBtn').addEventListener('click', () => {
+            // Tạo canvas để lấy hình từ video stream
+            const videoElement = document.getElementById('videoStream');
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+
+            // Cài kích thước canvas theo kích thước của video
+            canvas.width = videoElement.width || 640; // Đặt kích thước mặc định nếu không có
+            canvas.height = videoElement.height || 480;
+
+            // Vẽ khung hình hiện tại từ video lên canvas
+            context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+
+            // Lấy hình ảnh dưới dạng base64
+            const imageData = canvas.toDataURL('image/jpeg');
+            
+            // Hiển thị hình ảnh đã chụp
+            const capturedImageElement = document.getElementById('capturedImage');
+            capturedImageElement.src = imageData;
+
+            // Hiển thị chuỗi base64 trong textarea
+            const base64TextElement = document.getElementById('base64Text');
+            base64TextElement.value = imageData;  // Gán chuỗi base64 vào textarea
+
+            // Gửi base64 lên server
+            fetch('http://your-server-ip:5000/upload', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ image: imageData }) // Gửi base64 trong JSON
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Hình ảnh đã được gửi thành công!');
+                } else {
+                    alert('Lỗi khi gửi hình ảnh.');
+                }
+            })
+            .catch(error => {
+                console.error('Lỗi:', error);
+                alert('Không thể gửi hình ảnh.');
+            });
+        });
+    </script>
+</body>
+</html>
